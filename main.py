@@ -6,6 +6,11 @@ from io import BytesIO
 from PIL import Image
 import tensorflow as tf
 import os
+from dotenv import load_dotenv # Import load_dotenv
+
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = FastAPI()
 
@@ -31,7 +36,7 @@ CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 async def ping():
     return "Potato Disease Classification Server!"
 
-# Function to convert uploaded file bytes to a NumPy array image
+# Function to convert uploaded file bytes to a NumPy array image!
 def read_file_as_image(data) -> np.ndarray:
     image = Image.open(BytesIO(data))
     image = np.array(image)
@@ -62,4 +67,8 @@ async def predict(file: UploadFile = File(...)):
     }
 
 if __name__ == "__main__":
-    uvicorn.run(app, host='localhost', port=8000)
+    # Access environment variables
+    host = os.getenv("APP_HOST", "localhost") # Default to 'localhost' if not found
+    port = int(os.getenv("APP_PORT", 8000)) # Default to 8000, convert to int
+
+    uvicorn.run(app, host=host, port=port)
