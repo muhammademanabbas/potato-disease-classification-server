@@ -1,2 +1,4 @@
 # Ignore environment variables file
 .env
+/training
+/potatoes.h5
